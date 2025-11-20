@@ -11,6 +11,7 @@ export default function RootLayout() {
         headerTintColor: "#fff",
       }}
     >
+      
       <Stack.Screen
         name="index"
         options={{
