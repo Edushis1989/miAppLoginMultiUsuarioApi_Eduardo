@@ -1,6 +1,8 @@
 // src/storage/todo-list.ts
 // Funciones para gestionar la lista de tareas
 
+// Jeremy S: Verificación de estructura y métodos de tareas.
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 import { NewTaskData, Task } from "../types/todolist";
