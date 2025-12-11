@@ -1,8 +1,7 @@
 // app/index.tsx
-// Punto de entrada de la aplicación que redirige al login
-import Login from "./auth/index";
+import { Redirect } from "expo-router";
 
-// Componente de entrada que muestra la pantalla de login
+// Redirige automáticamente a la pantalla de autenticación
 export default function Index() {
-  return <Login />;
+  return <Redirect href="/auth" />;
 }

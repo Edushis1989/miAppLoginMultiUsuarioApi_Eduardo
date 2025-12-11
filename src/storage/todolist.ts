@@ -29,7 +29,7 @@ export const createTask = async (data: NewTaskData): Promise<Task> => {
   const tasks = await loadTasks();
   const id = Date.now().toString();
 
-  // Si NO hay foto → usamos null y no copiamos nada
+  // Si NO hay foto  usamos null y no copiamos nada
   let finalPhotoUri = data.photoUri ?? null;
 
   // Intentar copiar foto solo si existe
@@ -60,6 +60,7 @@ export const createTask = async (data: NewTaskData): Promise<Task> => {
     }
   }
 
+  // Crear la nueva tarea
   const newTask: Task = {
     id,
     title: data.title.trim(),
@@ -88,6 +89,7 @@ export const toggleTaskCompleted = async (id: string): Promise<void> => {
 
 
 // Eliminar una tarea
+// Si tiene foto local, eliminarla también
 
 export const deleteTask = async (id: string): Promise<void> => {
   let tasks = await loadTasks();

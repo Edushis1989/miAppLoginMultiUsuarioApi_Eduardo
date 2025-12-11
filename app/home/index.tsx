@@ -10,13 +10,13 @@ const logoSource = require("@assets/images/logo.png");
 export default function Home() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Mi App Login ADMIN</Text>
+      <Text style={styles.text}>Mi App Login</Text>
 
       <Image source={logoSource} style={styles.logo} />
 
       <Text style={styles.text}>
         🏠 Bienvenido a la pantalla Home{"\n"}
-        <Text style={styles.subtitle}>Esta Es Mi App Multi-usuario lista de tareas App 😊😁</Text>
+        <Text style={styles.subtitle}>Esta Es Mi App Multi-usuario de lista de tareas App con api externa 😊😁</Text>
       </Text>
     </View>
   );

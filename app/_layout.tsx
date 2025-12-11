@@ -1,9 +1,40 @@
 // app/_layout.tsx
-// Layout raíz de la aplicación con Stack Navigator
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
+import { AuthProvider, useAuth } from "../src/context/AuthContext";
 
-// Componente de layout raíz
-export default function RootLayout() {
+// Componente que maneja la navegación basada en el estado de autenticación
+function RootLayoutNav() {
+  const { token, isLoading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  // Efecto para redirigir según el estado de autenticación
+  useEffect(() => {
+    if (isLoading) return;
+
+    const inAuthGroup = segments[0] === "auth";
+    
+    if (!token && !inAuthGroup) {
+      // Si no hay token y no estamos en auth, enviar a login
+      router.replace("/auth");
+    } else if (token && inAuthGroup) {
+      // Si hay token y estamos en auth, enviar a home
+      router.replace("/home");
+    }
+  }, [token, segments, isLoading]);
+
+  // Mostrar indicador de carga mientras se verifica el estado de autenticación
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  // Configuración de la pila de navegación
   return (
     <Stack
       screenOptions={{
@@ -11,22 +42,19 @@ export default function RootLayout() {
         headerTintColor: "#fff",
       }}
     >
-      
       <Stack.Screen
         name="index"
         options={{
-          title: "Mi App Login",
-        }}
+            title: "Cargando...",
+            headerShown: false
+        }} 
       />
-
-      {/* Ruta correcta: auth/index, no "auth" */}
       <Stack.Screen
         name="auth/index"
         options={{
           headerShown: false,
         }}
       />
-
       <Stack.Screen
         name="home"
         options={{
@@ -34,5 +62,14 @@ export default function RootLayout() {
         }}
       />
     </Stack>
+  );
+}
+
+// Layout raíz que envuelve la aplicación con el proveedor de autenticación
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }

@@ -1,46 +1,38 @@
 // app/home/profile.tsx
-// Pantalla de perfil del usuario
-
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import { useAuth } from "../../src/context/AuthContext";
+import { getItem } from "../../src/storage/async";
 
-// Alias corregido con Expo Router
-import { getItem, removeItem } from "@src/storage/async";
-
-// Componente de pantalla de perfil
+// Pantalla de perfil de usuario 
 export default function ProfileScreen() {
   const router = useRouter();
+  const { signOut } = useAuth();
   const [user, setUser] = useState<string | null>(null);
 
-  // Cargar usuario al montar el componente
+  // Cargar el correo del usuario al montar el componente
   useEffect(() => {
     (async () => {
       const storedUser = await getItem("userEmail");
-
-      if (!storedUser) {
-        router.replace("/auth");
-        return;
+      if (storedUser) {
+        setUser(storedUser);
       }
-
-      setUser(storedUser);
     })();
-  }, [router]);
+  }, []);
 
-  // Función para cerrar sesión
-  const logout = async () => {
-    await removeItem("userEmail");
-    router.replace("/auth");
-  };
-
-
+  // Renderizado de la pantalla de perfil 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Perfil</Text>
 
-      <Text style={styles.info}>Usuario: {user}</Text>
+      <Text style={styles.info}>Usuario: {user || "Cargando..."}</Text>
 
-      <Button title="Cerrar Sesión" onPress={logout} color="#ef4444" />
+      <Button 
+        title="Cerrar Sesión" 
+        onPress={signOut} 
+        color="#ef4444" 
+      />
     </View>
   );
 }
